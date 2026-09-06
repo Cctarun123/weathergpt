@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { fetchWeather } from '../mockApi'
 
 function ChatWindow() {
   const [messages, setMessages] = useState([
@@ -8,17 +9,22 @@ function ChatWindow() {
   const [input, setInput] = useState('')
   const [loading, setLoading] = useState(false)
 
-  const handleSend = () => {
-    if (!input.trim()) return
-    setMessages([...messages, { sender: 'user', text: input }])
-    setInput('')
-    setLoading(true)
+  const handleSend = async () => {
+  if (!input.trim()) return
+  const city = input
+  setMessages([...messages, { sender: 'user', text: input }])
+  setInput('')
+  setLoading(true)
 
-    setTimeout(() => {
-      setMessages((prev) => [...prev, { sender: 'bot', text: 'Fetching weather data...' }])
-      setLoading(false)
-    }, 1000)
-  }
+  const data = await fetchWeather(city)
+
+  setMessages((prev) => [
+    ...prev,
+    { sender: 'bot', text: `${data.city}: ${data.temperature}°C, ${data.condition}` },
+  ])
+  setLoading(false)
+}
+
 
   return (
     <div className="max-w-md mx-auto mt-10 border rounded-2xl shadow-lg flex flex-col h-[500px]">
