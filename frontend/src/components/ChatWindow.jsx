@@ -1,30 +1,30 @@
 import { useState } from 'react'
 import { fetchWeather } from '../mockApi'
 
-function ChatWindow() {
+function ChatWindow({ onWeatherUpdate }) {
   const [messages, setMessages] = useState([
     { sender: 'bot', text: 'Hi! Ask me about the weather anywhere.' },
-    { sender: 'user', text: 'What\'s the weather in Ludhiana?' },
+    { sender: 'user', text: "What's the weather in Ludhiana?" },
   ])
   const [input, setInput] = useState('')
   const [loading, setLoading] = useState(false)
 
   const handleSend = async () => {
-  if (!input.trim()) return
-  const city = input
-  setMessages([...messages, { sender: 'user', text: input }])
-  setInput('')
-  setLoading(true)
+    if (!input.trim()) return
+    const city = input
+    setMessages((prev) => [...prev, { sender: 'user', text: input }])
+    setInput('')
+    setLoading(true)
 
-  const data = await fetchWeather(city)
+    const data = await fetchWeather(city)
+    onWeatherUpdate(data)
 
-  setMessages((prev) => [
-    ...prev,
-    { sender: 'bot', text: `${data.city}: ${data.temperature}°C, ${data.condition}` },
-  ])
-  setLoading(false)
-}
-
+    setMessages((prev) => [
+      ...prev,
+      { sender: 'bot', text: `${data.city}: ${data.temperature}°C, ${data.condition}` },
+    ])
+    setLoading(false)
+  }
 
   return (
     <div className="max-w-md mx-auto mt-10 border rounded-2xl shadow-lg flex flex-col h-[500px]">
