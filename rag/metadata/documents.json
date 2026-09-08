@@ -7,5 +7,43 @@
         "topic": "heatwave",
         "file": "imd_heatwave_guidance_april_2026.pdf",
         "url": "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2255487&reg=3&lang=1"
-    }
+    },
+
+    {
+    "id": "doc_002",
+    "title": "Heat-health action plans: guidance, second edition",
+    "source": "World Health Organization",
+    "date": "2026-06-11",
+    "topic": "heat-health",
+    "file": "who_heat_health_action_plans_2026.pdf",
+    "url": "https://www.who.int/europe/publications/i/item/9789289062930"
+},
+
+{
+    "id": "doc_003",
+    "title": "Thunderstorm and Lightning: Tackling Weather Hazards",
+    "source": "National Disaster Management Authority, Ministry of Home Affairs, Government of India",
+    "date": "2019",
+    "topic": "thunderstorm-lightning",
+    "file": "ndma_thunderstorm_lightning_2019.pdf",
+    "url" : "https://www.ndma.gov.in/sites/default/files/IEC/Booklets/Thunderstorm%20Lightning%20NDMA%20A5%20BOOK%20New.pdf"
+},
+{
+    "id": "doc_004",
+    "title": "General Forecasting Organisation of IMD",
+    "source": "India Meteorological Department, Ministry of Earth Sciences, Government of India",
+    "topic": "weather-forecasting",
+    "file": "imd_forecasting_organisation.pdf",
+    "url": "https://mausam.imd.gov.in/imd_latest/contents/pdf/forecasting_sop.pdf"
+},
+{
+    "id": "doc_005",
+    "title": "Annual Climate Summary 2024",
+    "source": "India Meteorological Department, Ministry of Earth Sciences, Government of India",
+    "date": "2025-01-15",
+    "topic": "indian-climate-extreme-weather",
+    "file": "imd_annual_climate_summary_2024.pdf",
+    "url": "https://internal.imd.gov.in/press_release/20250115_pr_3554.pdf"
+}
 ]
+
