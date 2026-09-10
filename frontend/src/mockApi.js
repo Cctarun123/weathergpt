@@ -26,3 +26,14 @@ export function fetchForecast(city) {
     }, 1000)
   })
 }
+
+export function fetchClimateAnswer(question) {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve({
+        answer: `Based on historical climate data, this region has seen a gradual rise in average temperatures over the past decade, with more frequent heatwaves and shifting monsoon patterns.`,
+        sources: ['IPCC Climate Report 2023', 'IMD Regional Climate Data'],
+      })
+    }, 1000)
+  })
+}
