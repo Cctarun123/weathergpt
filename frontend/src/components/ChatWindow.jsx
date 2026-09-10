@@ -1,7 +1,7 @@
 import { useState } from 'react'
-import { fetchWeather } from '../mockApi'
+import { fetchWeather, fetchForecast } from '../mockApi'
 
-function ChatWindow({ onWeatherUpdate }) {
+function ChatWindow({ onWeatherUpdate, onForecastUpdate }) {
   const [messages, setMessages] = useState([
     { sender: 'bot', text: 'Hi! Ask me about the weather anywhere.' },
     { sender: 'user', text: "What's the weather in Ludhiana?" },
@@ -16,14 +16,25 @@ function ChatWindow({ onWeatherUpdate }) {
     setInput('')
     setLoading(true)
 
-    const data = await fetchWeather(city)
-    onWeatherUpdate(data)
+    try {
+      const data = await fetchWeather(city)
+      onWeatherUpdate(data)
 
-    setMessages((prev) => [
-      ...prev,
-      { sender: 'bot', text: `${data.city}: ${data.temperature}°C, ${data.condition}` },
-    ])
-    setLoading(false)
+      const forecast = await fetchForecast(city)
+      onForecastUpdate(forecast)
+
+      setMessages((prev) => [
+        ...prev,
+        { sender: 'bot', text: `${data.city}: ${data.temperature}°C, ${data.condition}` },
+      ])
+    } catch (err) {
+      setMessages((prev) => [
+        ...prev,
+        { sender: 'bot', text: "Sorry, couldn't fetch weather for that city. Try again?" },
+      ])
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (

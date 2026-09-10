@@ -11,3 +11,18 @@ export function fetchWeather(city) {
     }, 1000) // simulates network delay
   })
 }
+
+export function fetchForecast(city) {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri']
+      const conditions = ['Sunny', 'Cloudy', 'Rainy', 'Partly Cloudy', 'Clear']
+      const forecast = days.map((day) => ({
+        day,
+        temperature: Math.floor(Math.random() * 15) + 20,
+        condition: conditions[Math.floor(Math.random() * conditions.length)],
+      }))
+      resolve(forecast)
+    }, 800)
+  })
+}
