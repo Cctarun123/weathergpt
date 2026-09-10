@@ -15,7 +15,7 @@ export function fetchWeather(city) {
 export function fetchForecast(city) {
   return new Promise((resolve) => {
     setTimeout(() => {
-      const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri']
+      const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
       const conditions = ['Sunny', 'Cloudy', 'Rainy', 'Partly Cloudy', 'Clear']
       const forecast = days.map((day) => ({
         day,
@@ -23,6 +23,6 @@ export function fetchForecast(city) {
         condition: conditions[Math.floor(Math.random() * conditions.length)],
       }))
       resolve(forecast)
-    }, 800)
+    }, 1000)
   })
 }
