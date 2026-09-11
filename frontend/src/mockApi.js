@@ -37,3 +37,58 @@ export function fetchClimateAnswer(question) {
     }, 1000)
   })
 }
+
+export function fetchAlerts() {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve([
+        {
+          id: 1,
+          severity: 'High',
+          reason: 'Heavy rainfall expected',
+          location: 'Ludhiana',
+          time: '2026-09-12 06:00',
+        },
+        {
+          id: 2,
+          severity: 'Medium',
+          reason: 'Strong winds likely',
+          location: 'Phagwara',
+          time: '2026-09-12 14:00',
+        },
+        {
+          id: 3,
+          severity: 'Low',
+          reason: 'Slight temperature drop',
+          location: 'Jalandhar',
+          time: '2026-09-13 09:00',
+        },
+      ])
+    }, 800)
+  })
+}
+
+export function fetchAlertHistory() {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve([
+        {
+          id: 101,
+          severity: 'High',
+          reason: 'Flash flood warning',
+          location: 'Ludhiana',
+          time: '2026-09-08 10:00',
+          resolved: true,
+        },
+        {
+          id: 102,
+          severity: 'Low',
+          reason: 'Fog advisory',
+          location: 'Jalandhar',
+          time: '2026-09-06 06:30',
+          resolved: true,
+        },
+      ])
+    }, 800)
+  })
+}
