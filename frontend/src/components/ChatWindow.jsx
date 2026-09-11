@@ -14,6 +14,10 @@ function ChatWindow({ onWeatherUpdate, onForecastUpdate, onClimateUpdate }) {
     return keywords.some((word) => text.toLowerCase().includes(word))
   }
 
+  const handleClear = () => {
+    setMessages([{ sender: 'bot', text: 'Hi! Ask me about the weather anywhere.' }])
+  }
+
   const handleSend = async () => {
     if (!input.trim()) return
     const userText = input
@@ -53,6 +57,15 @@ function ChatWindow({ onWeatherUpdate, onForecastUpdate, onClimateUpdate }) {
 
   return (
     <div className="max-w-md mx-auto mt-10 border rounded-2xl shadow-lg flex flex-col h-[500px]">
+      <div className="flex justify-between items-center px-4 py-2 border-b bg-gray-50 rounded-t-2xl">
+        <span className="text-sm font-semibold text-gray-700">WeatherGPT Chat</span>
+        <button
+          onClick={handleClear}
+          className="text-xs font-medium text-red-500 border border-red-300 rounded-full px-3 py-1 hover:bg-red-50 transition"
+        >
+          Clear chat
+        </button>
+      </div>
       <div className="flex-1 overflow-y-auto p-4 space-y-3">
         {messages.map((msg, i) => (
           <div
