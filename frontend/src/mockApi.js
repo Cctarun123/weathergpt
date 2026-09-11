@@ -1,14 +1,18 @@
 export function fetchWeather(city) {
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     setTimeout(() => {
+      if (Math.random() < 0.1) {
+        reject(new Error('Failed to fetch weather data'))
+        return
+      }
       resolve({
         city: city,
-        temperature: Math.floor(Math.random() * 15) + 20, // fake temp 20-35°C
+        temperature: Math.floor(Math.random() * 15) + 20,
         condition: 'Partly Cloudy',
         humidity: 60,
         windSpeed: 12,
       })
-    }, 1000) // simulates network delay
+    }, 1000)
   })
 }
 
@@ -23,7 +27,7 @@ export function fetchForecast(city) {
         condition: conditions[Math.floor(Math.random() * conditions.length)],
       }))
       resolve(forecast)
-    }, 1000)
+    }, 800)
   })
 }
 

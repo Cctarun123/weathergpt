@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { fetchWeather, fetchForecast, fetchClimateAnswer } from '../mockApi'
 
 function ChatWindow({ onWeatherUpdate, onForecastUpdate, onClimateUpdate }) {
@@ -8,6 +8,11 @@ function ChatWindow({ onWeatherUpdate, onForecastUpdate, onClimateUpdate }) {
   ])
   const [input, setInput] = useState('')
   const [loading, setLoading] = useState(false)
+  const messagesEndRef = useRef(null)
+
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+  }, [messages, loading])
 
   const isClimateQuestion = (text) => {
     const keywords = ['climate', 'change', 'trend', 'history', 'historical']
@@ -86,6 +91,7 @@ function ChatWindow({ onWeatherUpdate, onForecastUpdate, onClimateUpdate }) {
             <div className="rounded-2xl px-4 py-2 bg-gray-200 text-black">Typing...</div>
           </div>
         )}
+        <div ref={messagesEndRef} />
       </div>
       <div className="flex border-t p-2">
         <input
