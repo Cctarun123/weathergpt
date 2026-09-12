@@ -1,14 +1,26 @@
+import { motion } from 'framer-motion'
+
 function ClimateAnswer({ data }) {
   if (!data) {
     return (
-      <div className="bg-green-50 border border-green-200 text-green-700 rounded-2xl px-6 py-4 max-w-md mx-auto mt-6 text-center text-sm">
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.3 }}
+        className="bg-green-50 border border-green-200 text-green-700 rounded-2xl px-6 py-4 max-w-md mx-auto mt-6 text-center text-sm"
+      >
         Ask a climate question to see an answer with sources here.
-      </div>
+      </motion.div>
     )
   }
 
   return (
-    <div className="bg-green-100 border border-green-300 rounded-2xl p-6 max-w-md mx-auto mt-6 shadow-sm">
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4 }}
+      className="bg-green-100 border border-green-300 rounded-2xl p-6 max-w-md mx-auto mt-6 shadow-sm"
+    >
       <p className="text-xs font-semibold text-green-700 uppercase tracking-wide mb-2">
         Climate Insight
       </p>
@@ -21,7 +33,7 @@ function ClimateAnswer({ data }) {
           ))}
         </ul>
       </div>
-    </div>
+    </motion.div>
   )
 }
 

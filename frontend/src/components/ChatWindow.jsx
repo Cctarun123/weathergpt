@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
+import { motion } from 'framer-motion'
 import { fetchWeather, fetchForecast, fetchClimateAnswer } from '../mockApi'
 
 function ChatWindow({ onWeatherUpdate, onForecastUpdate, onClimateUpdate }) {
@@ -73,8 +74,11 @@ function ChatWindow({ onWeatherUpdate, onForecastUpdate, onClimateUpdate }) {
       </div>
       <div className="flex-1 overflow-y-auto p-4 space-y-3">
         {messages.map((msg, i) => (
-          <div
+          <motion.div
             key={i}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.25 }}
             className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}
           >
             <div
@@ -84,7 +88,7 @@ function ChatWindow({ onWeatherUpdate, onForecastUpdate, onClimateUpdate }) {
             >
               {msg.text}
             </div>
-          </div>
+          </motion.div>
         ))}
         {loading && (
           <div className="flex justify-start">
