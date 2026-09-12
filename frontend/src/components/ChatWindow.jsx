@@ -62,12 +62,12 @@ function ChatWindow({ onWeatherUpdate, onForecastUpdate, onClimateUpdate }) {
   }
 
   return (
-    <div className="max-w-md mx-auto mt-10 border rounded-2xl shadow-lg flex flex-col h-[500px]">
-      <div className="flex justify-between items-center px-4 py-2 border-b bg-gray-50 rounded-t-2xl">
-        <span className="text-sm font-semibold text-gray-700">WeatherGPT Chat</span>
+    <div className="max-w-md mx-auto mt-10 bg-gray-900 border border-gray-800 rounded-2xl shadow-lg flex flex-col h-[500px]">
+      <div className="flex justify-between items-center px-4 py-2 border-b border-gray-800 rounded-t-2xl">
+        <span className="text-sm font-semibold text-gray-300">WeatherGPT Chat</span>
         <button
           onClick={handleClear}
-          className="text-xs font-medium text-red-500 border border-red-300 rounded-full px-3 py-1 hover:bg-red-50 transition"
+          className="text-xs font-medium text-red-400 border border-red-900 rounded-full px-3 py-1 hover:bg-red-950 transition"
         >
           Clear chat
         </button>
@@ -83,7 +83,9 @@ function ChatWindow({ onWeatherUpdate, onForecastUpdate, onClimateUpdate }) {
           >
             <div
               className={`rounded-2xl px-4 py-2 max-w-xs ${
-                msg.sender === 'user' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-black'
+                msg.sender === 'user'
+                  ? 'bg-blue-500 text-white'
+                  : 'bg-gray-800 text-gray-200'
               }`}
             >
               {msg.text}
@@ -92,14 +94,14 @@ function ChatWindow({ onWeatherUpdate, onForecastUpdate, onClimateUpdate }) {
         ))}
         {loading && (
           <div className="flex justify-start">
-            <div className="rounded-2xl px-4 py-2 bg-gray-200 text-black">Typing...</div>
+            <div className="rounded-2xl px-4 py-2 bg-gray-800 text-gray-400">Typing...</div>
           </div>
         )}
         <div ref={messagesEndRef} />
       </div>
-      <div className="flex border-t p-2">
+      <div className="flex border-t border-gray-800 p-2">
         <input
-          className="flex-1 border rounded-lg px-3 py-2 mr-2"
+          className="flex-1 border rounded-lg px-3 py-2 mr-2 bg-gray-800 text-white border-gray-700 placeholder-gray-500"
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && !loading && handleSend()}
@@ -109,7 +111,7 @@ function ChatWindow({ onWeatherUpdate, onForecastUpdate, onClimateUpdate }) {
         <button
           onClick={handleSend}
           disabled={loading}
-          className="bg-blue-500 text-white px-4 py-2 rounded-lg disabled:opacity-50"
+          className="bg-blue-500 text-white px-4 py-2 rounded-lg disabled:opacity-50 hover:bg-blue-600 transition"
         >
           Send
         </button>
