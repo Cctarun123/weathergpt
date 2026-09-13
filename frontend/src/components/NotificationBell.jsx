@@ -5,7 +5,7 @@ function NotificationBell({ notifications }) {
   const unreadCount = notifications.filter((n) => !n.read).length
 
   return (
-    <div className="relative max-w-md mx-auto mt-4 flex justify-end pr-2">
+    <div className="relative">
       <button
         onClick={() => setOpen(!open)}
         className="relative bg-gray-800 border border-gray-700 rounded-full w-10 h-10 flex items-center justify-center text-lg"

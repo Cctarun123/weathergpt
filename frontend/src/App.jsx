@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react'
+import NavBar from './components/NavBar'
+import HeroSection from './components/HeroSection'
 import WeatherCard from './components/WeatherCard'
+import RiskCard from './components/RiskCard'
 import ChatWindow from './components/ChatWindow'
 import ForecastList from './components/ForecastList'
 import ClimateAnswer from './components/ClimateAnswer'
 import AlertDashboard from './components/AlertDashboard'
 import SubscriptionForm from './components/SubscriptionForm'
-import NotificationBell from './components/NotificationBell'
 import SettingsPanel from './components/SettingsPanel'
 import { fetchAlerts, fetchAlertHistory } from './mockApi'
 
@@ -51,9 +53,15 @@ function App() {
   }
 
   return (
-    <div>
-      <NotificationBell notifications={notifications} />
-      <WeatherCard data={weatherData} />
+    <div className="min-h-screen bg-gray-950 pb-10">
+      <NavBar notifications={notifications} />
+      <HeroSection />
+
+      <div className="max-w-4xl mx-auto px-4 grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <WeatherCard data={weatherData} />
+        <RiskCard alerts={alertsData} />
+      </div>
+
       <ForecastList forecast={forecastData} />
       <ClimateAnswer data={climateData} />
       <SubscriptionForm subscriptions={subscriptions} onSubscribe={handleSubscribe} />
