@@ -1,8 +1,6 @@
 import { useState, useEffect } from 'react'
 import NavBar from './components/NavBar'
 import HeroSection from './components/HeroSection'
-import WeatherCard from './components/WeatherCard'
-import RiskCard from './components/RiskCard'
 import ChatWindow from './components/ChatWindow'
 import ForecastList from './components/ForecastList'
 import ClimateAnswer from './components/ClimateAnswer'
@@ -55,12 +53,7 @@ function App() {
   return (
     <div className="min-h-screen bg-gray-950 pb-10">
       <NavBar notifications={notifications} />
-      <HeroSection />
-
-      <div className="max-w-4xl mx-auto px-4 grid grid-cols-1 sm:grid-cols-2 gap-6">
-        <WeatherCard data={weatherData} />
-        <RiskCard alerts={alertsData} />
-      </div>
+      <HeroSection weatherData={weatherData} alertsData={alertsData} />
 
       <ForecastList forecast={forecastData} />
       <ClimateAnswer data={climateData} />
