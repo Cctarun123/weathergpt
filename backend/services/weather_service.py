@@ -1,5 +1,6 @@
 import os
 import requests
+from requests.exceptions import Timeout, RequestException
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -7,6 +8,7 @@ load_dotenv()
 API_KEY = os.getenv("OPENWEATHER_API_KEY")
 
 BASE_URL = "https://api.openweathermap.org/data/2.5/weather"
+FORECAST_URL = "https://api.openweathermap.org/data/2.5/forecast"
 
 
 def get_current_weather(location: str):
@@ -19,7 +21,16 @@ def get_current_weather(location: str):
         "units": "metric"
     }
 
-    response = requests.get(BASE_URL, params=params, timeout=10)
+    try:
+        response = requests.get(
+            BASE_URL,
+            params=params,
+            timeout=10
+        )
+    except Timeout:
+        raise TimeoutError("Weather provider request timed out")
+    except RequestException:
+        raise ConnectionError("Unable to connect to weather provider")
 
     if response.status_code == 404:
         raise ValueError(f"Location '{location}' not found")
@@ -27,6 +38,8 @@ def get_current_weather(location: str):
     response.raise_for_status()
 
     return response.json()
+
+
 def normalize_weather(data):
     return {
         "location": data["name"],
@@ -36,7 +49,6 @@ def normalize_weather(data):
         "condition": data["weather"][0]["description"],
         "rain_probability": 0.0
     }
-FORECAST_URL = "https://api.openweathermap.org/data/2.5/forecast"
 
 
 def get_forecast(location: str):
@@ -49,7 +61,16 @@ def get_forecast(location: str):
         "units": "metric"
     }
 
-    response = requests.get(FORECAST_URL, params=params, timeout=10)
+    try:
+        response = requests.get(
+            FORECAST_URL,
+            params=params,
+            timeout=10
+        )
+    except Timeout:
+        raise TimeoutError("Weather provider request timed out")
+    except RequestException:
+        raise ConnectionError("Unable to connect to weather provider")
 
     if response.status_code == 404:
         raise ValueError(f"Location '{location}' not found")
@@ -57,6 +78,8 @@ def get_forecast(location: str):
     response.raise_for_status()
 
     return response.json()
+
+
 def normalize_forecast(data):
     forecast = []
 
