@@ -41,15 +41,17 @@ def get_current_weather(location: str):
 
 
 def normalize_weather(data):
-    return {
-        "location": data["name"],
-        "temperature": data["main"]["temp"],
-        "humidity": data["main"]["humidity"],
-        "wind_speed": data["wind"]["speed"],
-        "condition": data["weather"][0]["description"],
-        "rain_probability": 0.0
-    }
-
+    try:
+        return {
+            "location": data["name"],
+            "temperature": data["main"]["temp"],
+            "humidity": data["main"]["humidity"],
+            "wind_speed": data["wind"]["speed"],
+            "condition": data["weather"][0]["description"],
+            "rain_probability": 0.0
+        }
+    except (KeyError, IndexError, TypeError):
+        raise ValueError("Weather provider returned incomplete weather data")
 
 def get_forecast(location: str):
     if not API_KEY:
@@ -81,19 +83,23 @@ def get_forecast(location: str):
 
 
 def normalize_forecast(data):
-    forecast = []
+    try:
+        forecast = []
 
-    for item in data["list"]:
-        forecast.append({
-            "datetime": item["dt_txt"],
-            "temperature": item["main"]["temp"],
-            "humidity": item["main"]["humidity"],
-            "wind_speed": item["wind"]["speed"],
-            "condition": item["weather"][0]["description"],
-            "rain_probability": item.get("pop", 0) * 100
-        })
+        for item in data["list"]:
+            forecast.append({
+                "datetime": item["dt_txt"],
+                "temperature": item["main"]["temp"],
+                "humidity": item["main"]["humidity"],
+                "wind_speed": item["wind"]["speed"],
+                "condition": item["weather"][0]["description"],
+                "rain_probability": item.get("pop", 0) * 100
+            })
 
-    return {
-        "location": data["city"]["name"],
-        "forecast": forecast
-    }
+        return {
+            "location": data["city"]["name"],
+            "forecast": forecast
+        }
+
+    except (KeyError, IndexError, TypeError):
+        raise ValueError("Weather provider returned incomplete forecast data")
