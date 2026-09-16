@@ -48,10 +48,11 @@ def normalize_weather(data):
             "humidity": data["main"]["humidity"],
             "wind_speed": data["wind"]["speed"],
             "condition": data["weather"][0]["description"],
-            "rain_probability": 0.0
+            "rain_probability": None
         }
     except (KeyError, IndexError, TypeError):
         raise ValueError("Weather provider returned incomplete weather data")
+
 
 def get_forecast(location: str):
     if not API_KEY:

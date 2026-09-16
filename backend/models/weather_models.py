@@ -7,7 +7,7 @@ class WeatherResponse(BaseModel):
     humidity: int
     wind_speed: float
     condition: str
-    rain_probability: float
+    rain_probability: float | None
 
 
 class ForecastItem(BaseModel):
