@@ -1,5 +1,9 @@
-from intent_detection import detect_intent
-from entity_extraction import extract_entities
+try:
+    from .entity_extraction import extract_entities
+    from .intent_detection import detect_intent
+except (ImportError, ValueError):
+    from entity_extraction import extract_entities
+    from intent_detection import detect_intent
 
 
 def parse_weather_query(question):
