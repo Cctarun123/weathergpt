@@ -22,11 +22,27 @@ def test_entity_extraction():
 
 
 def test_query_parser():
-    result = parse_weather_query("Will it rain in Tirupati tomorrow?")
+    result = parse_weather_query(
+        "Will it rain in Tirupati tomorrow?"
+    )
 
     assert result["intent"] == "RAIN_FORECAST"
     assert result["location"] == "Tirupati"
     assert result["date"] == "tomorrow"
+    assert result["forecast_range"] == "1_day"
+    assert result["alert_type"] == "rain"
+
+
+def test_confidence_score():
+    result = parse_weather_query(
+        "Will it rain in Tirupati tomorrow?"
+    )
+
+    assert result["confidence_score"] >= 0.8
+
+    unknown_result = parse_weather_query("Hello")
+
+    assert unknown_result["confidence_score"] == 0.0
 
 
 # if __name__ == "__main__":
@@ -37,14 +53,9 @@ def test_query_parser():
 #     print("All NLP tests passed successfully!")
 
 if __name__ == "__main__":
-    queries = [
-        "What is the weather today?",
-        "Will it rain tomorrow in Tirupati?",
-        "Give me the forecast for Chennai",
-        "Set an alert for heavy rain",
-        "What is the temperature in Bangalore?"
-    ]
+    test_intent_detection()
+    test_entity_extraction()
+    test_query_parser()
+    test_confidence_score()
 
-    for query in queries:
-        print("\nQuery:", query)
-        print(parse_weather_query(query))
+    print("All NLP tests passed successfully!")

@@ -1,173 +1,112 @@
 import re
 
 
-def extract_location(question):
-    """
-    Extract a location from a weather question.
-
-    This is a basic version using common Indian city names.
-    """
-
-    locations = [
-        "hyderabad",
-        "bangalore",
-        "bengaluru",
-        "chennai",
-        "mumbai",
-        "delhi",
-        "kolkata",
-        "pune",
-        "tirupati",
-        "vijayawada",
-        "visakhapatnam",
-        "kerala",
-        "goa",
-        "ooty",
-        "jaipur",
-        "lucknow",
-        "ahmedabad",
+def extract_location(query):
+    location_patterns = [
+        r"\bin ([A-Za-z]+(?: [A-Za-z]+)*)",
+        r"\bat ([A-Za-z]+(?: [A-Za-z]+)*)",
+        r"\bfor ([A-Za-z]+(?: [A-Za-z]+)*)"
     ]
 
-    text = question.lower()
+    for pattern in location_patterns:
+        match = re.search(pattern, query, re.IGNORECASE)
 
-    for location in locations:
-        if location in text:
+        if match:
+            location = match.group(1).strip()
+
+            # Remove common time words accidentally captured
+            location = re.split(
+                r"\b(today|tomorrow|tonight|now|next week)\b",
+                location,
+                flags=re.IGNORECASE
+            )[0].strip()
+
             return location.title()
 
     return None
 
 
-def extract_date(question):
-    """
-    Extract a relative date or simple date phrase.
-    """
+def extract_date(query):
+    query = query.lower()
 
-    text = question.lower()
+    if "today" in query:
+        return "today"
 
-    date_patterns = [
-        r"\btoday\b",
-        r"\btomorrow\b",
-        r"\byesterday\b",
-        r"\btonight\b",
-        r"\bthis weekend\b",
-        r"\bnext weekend\b",
-        r"\bnext week\b",
-        r"\blast week\b",
-        r"\blast month\b",
-        r"\bnext month\b",
-    ]
+    if "tomorrow" in query:
+        return "tomorrow"
 
-    for pattern in date_patterns:
-        match = re.search(pattern, text)
+    if "tonight" in query:
+        return "tonight"
 
-        if match:
-            return match.group()
+    if "next week" in query:
+        return "next_week"
+
+    if "this week" in query:
+        return "this_week"
 
     return None
 
 
-def extract_time(question):
-    """
-    Extract common time expressions.
-    """
+def extract_forecast_range(query):
+    query = query.lower()
 
-    text = question.lower()
+    if "next week" in query:
+        return "7_days"
 
-    time_patterns = [
-        r"\bmorning\b",
-        r"\bafternoon\b",
-        r"\bevening\b",
-        r"\bnight\b",
-        r"\bnoon\b",
-        r"\bmidnight\b",
-        r"\b\d{1,2}\s?(am|pm)\b",
-    ]
+    if "next 5 days" in query:
+        return "5_days"
 
-    for pattern in time_patterns:
-        match = re.search(pattern, text)
+    if "next 3 days" in query:
+        return "3_days"
 
-        if match:
-            return match.group()
+    if "next few days" in query:
+        return "3_days"
+
+    if "tomorrow" in query:
+        return "1_day"
 
     return None
 
 
-def extract_weather_parameter(question):
-    """
-    Extract the weather parameter requested by the user.
-    """
+def extract_alert_type(query):
+    query = query.lower()
 
-    text = question.lower()
+    if "rain" in query:
+        return "rain"
 
-    parameter_keywords = {
-        "temperature": [
-            "temperature",
-            "hot",
-            "cold",
-        ],
-        "rainfall": [
-            "rain",
-            "raining",
-            "rainfall",
-            "precipitation",
-        ],
-        "humidity": [
-            "humidity",
-            "humid",
-        ],
-        "wind_speed": [
-            "wind",
-            "wind speed",
-        ],
-        "pressure": [
-            "pressure",
-        ],
-        "visibility": [
-            "visibility",
-        ],
-        "uv_index": [
-            "uv index",
-            "uv",
-        ],
-    }
+    if "storm" in query:
+        return "storm"
 
-    for parameter, keywords in parameter_keywords.items():
-        for keyword in keywords:
-            if keyword in text:
-                return parameter
+    if "wind" in query:
+        return "wind"
+
+    if "temperature" in query or "heat" in query:
+        return "temperature"
+
+    if "flood" in query:
+        return "flood"
 
     return None
 
 
-def extract_entities(question):
-    """
-    Extract all available entities from the question.
-    """
-
-    if not isinstance(question, str) or not question.strip():
-        raise ValueError("Question must be a non-empty string")
-
+def extract_entities(query):
     return {
-        "location": extract_location(question),
-        "date": extract_date(question),
-        "time": extract_time(question),
-        "weather_parameter": extract_weather_parameter(question),
+        "location": extract_location(query),
+        "date": extract_date(query),
+        "forecast_range": extract_forecast_range(query),
+        "alert_type": extract_alert_type(query)
     }
 
 
 if __name__ == "__main__":
-
-    questions = [
-        "What is the weather in Hyderabad now?",
-        "Will it rain in Bangalore tomorrow?",
-        "What is the temperature in Chennai this evening?",
-        "How humid is Mumbai today?",
-        "What is the wind speed in Delhi tomorrow morning?",
-        "What is the weather in Tirupati?",
-        "Will it rain tomorrow?",
+    test_queries = [
+        "What is the weather in Tirupati today?",
+        "Will it rain in Chennai tomorrow?",
+        "Give me the forecast for Bangalore next week",
+        "Set a rain alert in Hyderabad",
+        "Will there be strong winds in Delhi?"
     ]
 
-    for question in questions:
-        print("Question:", question)
-        print("Entities:", extract_entities(question))
-        print("-" * 60)
+    for query in test_queries:
+        print("\nQuery:", query)
+        print(extract_entities(query))

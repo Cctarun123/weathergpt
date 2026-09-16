@@ -1,57 +1,66 @@
 try:
-    from .entity_extraction import extract_entities
     from .intent_detection import detect_intent
+    from .entity_extraction import extract_entities
 except (ImportError, ValueError):
-    from entity_extraction import extract_entities
     from intent_detection import detect_intent
+    from entity_extraction import extract_entities
 
 
-def parse_weather_query(question):
-    """
-    Convert a natural-language weather question
-    into a structured weather query.
-    """
+def calculate_confidence(intent, entities):
+    score = 0.0
 
-    if not isinstance(question, str) or not question.strip():
-        raise ValueError("Question must be a non-empty string")
+    # Intent confidence
+    if intent != "UNKNOWN":
+        score += 0.5
 
-    intent = detect_intent(question)
-    entities = extract_entities(question)
+    # Location confidence
+    if entities["location"] is not None:
+        score += 0.2
 
-    weather_query = {
+    # Date confidence
+    if entities["date"] is not None:
+        score += 0.1
+
+    # Forecast range confidence
+    if entities["forecast_range"] is not None:
+        score += 0.1
+
+    # Alert type confidence
+    if entities["alert_type"] is not None:
+        score += 0.1
+
+    return round(score, 2)
+
+
+def parse_weather_query(query):
+    entities = extract_entities(query)
+    intent = detect_intent(query)
+
+    confidence = calculate_confidence(
+        intent,
+        entities
+    )
+
+    return {
+        "query": query,
         "intent": intent,
         "location": entities["location"],
         "date": entities["date"],
-        "time": entities["time"],
-        "weather_parameter": entities["weather_parameter"],
-        "forecast_range": None,
-        "date_range": None,
-        "topic": None,
-        "alert_type": None,
-        "severity": None,
-        "original_question": question,
+        "forecast_range": entities["forecast_range"],
+        "alert_type": entities["alert_type"],
+        "confidence_score": confidence
     }
-
-    return weather_query
 
 
 if __name__ == "__main__":
-
-    questions = [
-        "What is the weather in Hyderabad now?",
-        "Will it rain in Bangalore tomorrow?",
-        "What is the temperature in Chennai this evening?",
-        "How humid is Mumbai today?",
-        "Is there a cyclone warning in Delhi?",
-        "What was the weather in Tirupati yesterday?",
-        "Will it rain tomorrow?",
+    queries = [
+        "What is the weather in Tirupati today?",
+        "Will it rain in Chennai tomorrow?",
+        "Give me the forecast for Bangalore next week",
+        "Set a rain alert in Hyderabad",
+        "Hello"
     ]
 
-    for question in questions:
-        print("Question:", question)
-        print("Parsed Query:")
-
-        result = parse_weather_query(question)
-
-        print(result)
-        print("-" * 70)
+    for query in queries:
+        print("\nQuery:", query)
+        print(parse_weather_query(query))
