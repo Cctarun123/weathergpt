@@ -6,6 +6,9 @@ dist-ssr/
 .DS_Store
 .vscode/*
 !.vscode/extensions.json
-venv/
+
 __pycache__/
 *.pyc
+venv/
+.venv/
+rag/chroma_db/git status
